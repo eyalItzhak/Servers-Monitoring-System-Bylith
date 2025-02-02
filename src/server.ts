@@ -4,7 +4,10 @@ import { IRoute } from "./types/route.interface";
 import cors from "cors";
 import { errorHandlerMiddleWare } from "./middlewares/errorsMiddleWares/errorHandlerMiddleWare";
 import { notFoundHandler } from "./middlewares/errorsMiddleWares/notFoundHandler";
+import Database from "./config/database";
+import Domain from "./models/domains.model";
 
+const database = new Database();
 const routeList: IRoute[] = [new TestRoute()];
 
 export class ExpressServer {
@@ -27,8 +30,15 @@ export class ExpressServer {
   }
 
   public start(): void {
-    this.app.listen(this.port, () => {
+    this.app.listen(this.port, async () => {
+      const databaseClient = await database.connect();
+      Domain.createTableIfNotExists(database.client);
       console.log(`Server running at http://localhost:${this.port}`);
     });
+  }
+
+  public stop(): void {
+    database.disconnect();
+    process.exit();
   }
 }
