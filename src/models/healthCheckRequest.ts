@@ -1,5 +1,5 @@
 import { Client } from "pg";
-import { HEALTHCHECK_REQUEST_QUERIES } from "../constants/queries/healthCheckRequestQueries";
+import { HEALTH_CHECK_REQUEST_QUERIES } from "../constants/queries/healthCheckRequestQueries";
 import { executeQuery } from "../utils/sqlFunctions";
 
 export class HealthCheckRequest {
@@ -24,7 +24,7 @@ export class HealthCheckRequest {
   }
 
   static async createHealthCheckRequestTable(client: Client) {
-    const query = HEALTHCHECK_REQUEST_QUERIES.CREATE_TABLE_IF_NOT_EXISTS;
+    const query = HEALTH_CHECK_REQUEST_QUERIES.CREATE_TABLE_IF_NOT_EXISTS();
     await executeQuery(client, query, {
       success:
         'The "healthCheck_requests" table was created successfully or already exists',

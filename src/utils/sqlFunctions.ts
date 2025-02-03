@@ -17,25 +17,28 @@ export const sql = (strings: TemplateStringsArray, ...values: any[]) =>
 export async function executeQuery(
   client: Client,
   query: string,
-  messages?: QueryMessages
+  customMessage?: { success?: string; error?: string; issue?: string }, // Optional message overrides
+  queryParams?: any[] // Params for query placeholders
 ) {
   try {
-    const res = await client.query(query);
-    if (res.command === "CREATE") {
-      console.log(
-        messages?.success ||
-          "The query executed successfully (CREATE) or already exists."
-      );
+    // Execute the query with parameters if provided
+    const res = await client.query(query, queryParams);
+
+    // Log success message, fallback to default if not provided
+    if (res.command) {
+      console.log(customMessage?.success || "Query executed successfully.");
     } else {
       console.log(
-        messages?.issue || "There was an issue executing the query:",
+        customMessage?.issue || "Query executed, but no rows affected.",
         res
       );
     }
+
     return res;
   } catch (err) {
+    // Log the error message if it occurs
     console.error(
-      messages?.error || "An error occurred while executing the query:",
+      customMessage?.error || "An error occurred while executing the query:",
       err
     );
     throw err;

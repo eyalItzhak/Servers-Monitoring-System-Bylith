@@ -1,5 +1,5 @@
 import { TestController } from "../controllers/TestControllers";
-import { IRoute } from "../types/route.interface";
+import { IRoute } from "../constants/interfaces/route.interface";
 import { tryCatchWrapper } from "../utils/tryCatchWrapper";
 
 export class TestRoute extends IRoute {

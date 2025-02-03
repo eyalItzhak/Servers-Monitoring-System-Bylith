@@ -1,7 +1,5 @@
-import { Request, Response } from "express";
 import { testService } from "../services/testService";
-
-export type RespondType = (req: Request, res: Response, next: any) => any;
+import { RespondType } from "../constants/types/controllerTypes";
 
 export class TestController {
   // Method to handle "Hello World" response

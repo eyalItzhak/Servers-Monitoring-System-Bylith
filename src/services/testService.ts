@@ -1,4 +1,3 @@
-import { RespondType } from "../controllers/TestControllers";
 import { AppError } from "../errors/AppError";
 
 const errorTest = () => {
