@@ -5,7 +5,8 @@ import cors from "cors";
 import { errorHandlerMiddleWare } from "./middlewares/errorsMiddleWares/errorHandlerMiddleWare";
 import { notFoundHandler } from "./middlewares/errorsMiddleWares/notFoundHandler";
 import Database from "./config/database";
-import Domain from "./models/domains.model";
+import Domain from "./models/domains";
+import { HealthCheckRequest } from "./models/healthCheckRequest";
 
 const database = new Database();
 const routeList: IRoute[] = [new TestRoute()];
@@ -33,6 +34,7 @@ export class ExpressServer {
     this.app.listen(this.port, async () => {
       const databaseClient = await database.connect();
       Domain.createTableIfNotExists(database.client);
+      HealthCheckRequest.createHealthCheckRequestTable(database.client);
       console.log(`Server running at http://localhost:${this.port}`);
     });
   }
